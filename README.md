@@ -1,42 +1,111 @@
-#### 1. **深度遍历文件夹**
+- ### 新增功能
 
-- 增加了调试日志，打印每个扫描的目录和文件。
-- 确保 `os.walk` 正确遍历所有子文件夹和文件。
+  #### 1. **简写模式**
 
-#### 2. **模拟测试结果准确**
+  - `-e`：`--execute` 的简写，用于实际执行删除操作。
+  - `-o`：`--organize` 的简写，用于指定整理文件的目标目录。
+  - `-r`：`--remove-empty-dirs` 的简写，用于删除空文件夹。
+  - `-v`：`--version` 的简写，用于显示版本信息。
 
-- 在模拟运行时，检查文件是否存在，并记录操作日志。
-- 确保模拟运行和实际执行的逻辑一致，只是不实际修改文件系统。
+  #### 2. **帮助信息**
 
-#### 3. **整理文件功能支持模拟运行**
+  - 使用 `argparse.RawTextHelpFormatter` 格式化帮助信息，使其更易读。
+  - 添加了详细的示例说明，方便用户快速上手。
 
-- 在 `organize_files` 方法中增加了 `dry_run` 参数，支持模拟运行。
+  ------
 
-#### 4. **删除空文件夹功能支持模拟运行**
+  ### 使用示例
 
-- 在 `remove_empty_dirs` 方法中增加了 `dry_run` 参数，支持模拟运行。
+  #### 1. **查看帮助信息**
 
-------
+  bash
 
-### 使用示例
+  复制
 
-#### 1. **模拟运行**
+  ```
+  python dedup.py -h
+  ```
 
-```
-python dedup.py /path/to/directory --organize /path/to/target --remove-empty-dirs
-```
+  #### 2. **模拟运行**
 
-#### 2. **实际执行**
+  bash
 
-```
-python dedup.py /path/to/directory --organize /path/to/target --remove-empty-dirs --execute
-```
+  复制
 
-------
+  ```
+  python dedup.py /path/to/directory -o /path/to/target -r
+  ```
 
-### 总结
+  #### 3. **实际执行**
 
-- 改进了深度遍历逻辑，确保所有文件和文件夹被正确处理。
-- 增强了模拟运行的准确性，确保模拟结果与实际执行一致。
-- 支持更多功能的模拟运行（如整理文件和删除空文件夹）。
-- 提供了详细的调试日志和操作报告，便于排查问题。
+  bash
+
+  复制
+
+  ```
+  python dedup.py /path/to/directory -o /path/to/target -r -e
+  ```
+
+  #### 4. **删除空文件夹**
+
+  bash
+
+  复制
+
+  ```
+  python dedup.py /path/to/directory -r -e
+  ```
+
+  #### 5. **显示版本信息**
+
+  bash
+
+  复制
+
+  ```
+  python dedup.py -v
+  ```
+
+  ------
+
+  ### 帮助信息示例
+
+  运行 `python dedup.py -h` 将显示以下内容：
+
+  复制
+
+  ```
+  usage: dedup.py [-h] [-e] [-o TARGET_DIR] [-r] [-v] directory
+  
+  渗透测试字典文件去重整理工具
+  
+  positional arguments:
+    directory             要处理的根目录
+  
+  optional arguments:
+    -h, --help            show this help message and exit
+    -e, --execute         实际执行删除操作（默认模拟运行）
+    -o TARGET_DIR, --organize TARGET_DIR
+                          整理文件到指定目录（按扩展名分类）
+    -r, --remove-empty-dirs
+                          删除空文件夹
+    -v, --version         显示版本信息
+  
+  示例:
+    1. 模拟运行（仅显示操作日志）:
+       python dedup.py /path/to/directory -o /path/to/target -r
+  
+    2. 实际执行（删除重复文件并整理）:
+       python dedup.py /path/to/directory -o /path/to/target -r -e
+  
+    3. 删除空文件夹:
+       python dedup.py /path/to/directory -r -e
+  ```
+
+  ------
+
+  ### 总结
+
+  - 添加了简写模式，提升命令行操作的便捷性。
+  - 完善了帮助信息，包括参数说明和使用示例。
+  - 保持了脚本的模块化设计，便于后续扩展和 GUI 开发。

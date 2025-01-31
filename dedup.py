@@ -52,7 +52,7 @@ class FileDeduplicator:
         error_count = 0
 
         if dry_run:
-            print("\n模拟运行结果（使用 --execute 参数实际执行删除）:")
+            print("\n模拟运行结果（使用 -e/--execute 参数实际执行删除）:")
 
         for dup in self.duplicates:
             try:
@@ -76,7 +76,7 @@ class FileDeduplicator:
     def organize_files(self, target_dir: str, dry_run: bool = True):
         """将唯一文件按扩展名分类存储到新目录（支持模拟运行）"""
         if dry_run:
-            print("\n模拟整理文件（使用 --execute 参数实际执行）:")
+            print("\n模拟整理文件（使用 -e/--execute 参数实际执行）:")
 
         os.makedirs(target_dir, exist_ok=True)
 
@@ -113,7 +113,7 @@ class FileDeduplicator:
         error_count = 0
 
         if dry_run:
-            print("\n模拟删除空文件夹（使用 --execute 参数实际执行）:")
+            print("\n模拟删除空文件夹（使用 -e/--execute 参数实际执行）:")
 
         # 从最深层的目录开始遍历
         for dirpath, dirnames, filenames in sorted(os.walk(self.root_dir, topdown=False), key=lambda x: x[0], reverse=True):
@@ -148,11 +148,49 @@ class FileDeduplicator:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="渗透测试字典文件去重整理工具")
-    parser.add_argument("directory", help="要处理的根目录")
-    parser.add_argument("--execute", action="store_true", help="实际执行删除操作（默认模拟运行）")
-    parser.add_argument("--organize", metavar="TARGET_DIR", help="整理文件到指定目录（按扩展名分类）")
-    parser.add_argument("--remove-empty-dirs", action="store_true", help="删除空文件夹")
+    parser = argparse.ArgumentParser(
+        description="渗透测试字典文件去重整理工具",
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+    parser.add_argument(
+        "directory",
+        help="要处理的根目录"
+    )
+    parser.add_argument(
+        "-e", "--execute",
+        action="store_true",
+        help="实际执行删除操作（默认模拟运行）"
+    )
+    parser.add_argument(
+        "-o", "--organize",
+        metavar="TARGET_DIR",
+        help="整理文件到指定目录（按扩展名分类）"
+    )
+    parser.add_argument(
+        "-r", "--remove-empty-dirs",
+        action="store_true",
+        help="删除空文件夹"
+    )
+    parser.add_argument(
+        "-v", "--version",
+        action="version",
+        version="文件去重整理工具 v1.0",
+        help="显示版本信息"
+    )
+
+    # 自定义帮助信息
+    parser.epilog = """
+示例:
+  1. 模拟运行（仅显示操作日志）:
+     python dedup.py /path/to/directory -o /path/to/target -r
+
+  2. 实际执行（删除重复文件并整理）:
+     python dedup.py /path/to/directory -o /path/to/target -r -e
+
+  3. 删除空文件夹:
+     python dedup.py /path/to/directory -r -e
+    """
+
     args = parser.parse_args()
 
     processor = FileDeduplicator(args.directory)
@@ -185,7 +223,7 @@ def main():
     if args.execute:
         print("\n警告：实际删除了文件或文件夹！操作不可逆！")
     else:
-        print("\n注意：本次为模拟运行，使用 --execute 参数实际执行删除")
+        print("\n注意：本次为模拟运行，使用 -e/--execute 参数实际执行删除")
 
 
 if __name__ == "__main__":
