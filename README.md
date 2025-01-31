@@ -18,49 +18,29 @@
 
   #### 1. **查看帮助信息**
 
-  bash
-
-  复制
-
   ```
   python dedup.py -h
   ```
 
   #### 2. **模拟运行**
-
-  bash
-
-  复制
-
+  
   ```
   python dedup.py /path/to/directory -o /path/to/target -r
   ```
 
   #### 3. **实际执行**
 
-  bash
-
-  复制
-
   ```
   python dedup.py /path/to/directory -o /path/to/target -r -e
   ```
-
+  
   #### 4. **删除空文件夹**
-
-  bash
-
-  复制
 
   ```
   python dedup.py /path/to/directory -r -e
   ```
 
   #### 5. **显示版本信息**
-
-  bash
-
-  复制
 
   ```
   python dedup.py -v
@@ -71,8 +51,6 @@
   ### 帮助信息示例
 
   运行 `python dedup.py -h` 将显示以下内容：
-
-  复制
 
   ```
   usage: dedup.py [-h] [-e] [-o TARGET_DIR] [-r] [-v] directory
@@ -101,11 +79,11 @@
     3. 删除空文件夹:
        python dedup.py /path/to/directory -r -e
   ```
-
+  
   ------
-
+  
   ### 总结
-
+  
   - 添加了简写模式，提升命令行操作的便捷性。
   - 完善了帮助信息，包括参数说明和使用示例。
   - 保持了脚本的模块化设计，便于后续扩展和 GUI 开发。
